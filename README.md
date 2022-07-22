@@ -1,3 +1,3 @@
 # optimum-portfolio
-Calculates the optimum portfolio of stocks among other things (GUI in development) <br>
+Calculates the optimum portfolio of stocks among other things<br>
 Look at the "portfolio.ipynb" for more description
