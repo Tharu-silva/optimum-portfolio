@@ -3,7 +3,7 @@ from yahoo_fin.stock_info import *
 import numpy as np
 from datetime import date
 
-
+st.set_page_config(page_icon="🤯😮‍💨")
 @st.cache
 class Stock:
     def __init__(self, ticker, period="1mo"):

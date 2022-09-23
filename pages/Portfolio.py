@@ -1,9 +1,11 @@
+
 import streamlit as st
 from Stock import Stock
 import numpy as np
 import math
 import pandas as pd
-import matplotlib.pyplot as plt
+
+st.set_page_config(page_icon="💀💀")
 
 
 class Portfolio:
@@ -126,26 +128,27 @@ with st.sidebar:
     optimum = st.checkbox('Get optimum weights')
     plot_risk_vs_return = st.checkbox('Plot risk vs return graph')
 
-# Event handlers
-if get_rtrn:
-    st.write(portfolio.get_return(a_weight, b_weight))
+try:
+    # Event handlers
+    if get_rtrn:
+        st.write(portfolio.get_return(a_weight, b_weight))
 
-if risk:
-    st.write(portfolio.risk(a_weight, b_weight))
+    if risk:
+        st.write(portfolio.risk(a_weight, b_weight))
 
-if cov:
-    st.write(portfolio.get_cov())
+    if cov:
+        st.write(portfolio.get_cov())
 
-if corr:
-    st.write(portfolio.get_corr())
+    if corr:
+        st.write(portfolio.get_corr())
 
-if min_risk:
-    st.write(portfolio.get_min_risk())
+    if min_risk:
+        st.write(portfolio.get_min_risk())
 
-if optimum:
-    st.write(portfolio.get_optimum())
+    if optimum:
+        st.write(portfolio.get_optimum())
 
-if plot_risk_vs_return:
-    st.line_chart(portfolio.plot_risk_vs_return(), x="Risk (%)", y="Returns (%)")
-
-
+    if plot_risk_vs_return:
+        st.line_chart(portfolio.plot_risk_vs_return(), x="Risk (%)", y="Returns (%)")
+except:
+    st.warning('Please enter valid tickers')
