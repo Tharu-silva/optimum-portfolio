@@ -1,11 +1,10 @@
-
 import streamlit as st
 from Stock import Stock
 import numpy as np
 import math
 import pandas as pd
 
-st.set_page_config(page_icon="💀💀")
+st.set_page_config(page_icon="🏦")
 
 
 class Portfolio:
@@ -100,18 +99,22 @@ class Portfolio:
 
         risk = [self.risk(x, 1 - x) for x in weights]
 
-        data ={"Returns (%)": returns,
-               "Risk (%)": risk,
-               "Stock A Weight": weights}
+        data = {"Returns (%)": returns,
+                "Risk (%)": risk,
+                "Stock A Weight": weights}
 
         df = pd.DataFrame(data)
         return df
+
 
 st.sidebar.markdown("# Create portfolio")
 
 ticker_a = st.text_input('Please enter stock A')
 ticker_b = st.text_input('Please enter stock B')
 period = st.selectbox('Select a period', ['1mo', '1wk', '1d'])
+
+a_upper = "_" + "**" + ticker_a.upper() + "**" + "_"
+b_upper = "_" + "**" + ticker_b.upper() + "**" + "_"
 
 portfolio = Portfolio(ticker_a, ticker_b, period)
 
@@ -131,24 +134,34 @@ with st.sidebar:
 try:
     # Event handlers
     if get_rtrn:
-        st.write(portfolio.get_return(a_weight, b_weight))
+        st.markdown("Mean return of portfolio with weights of " +
+                 a_upper + ": " + str(a_weight) + " and " + b_upper + ": " + str(b_weight) + " is " +
+                 str(round(portfolio.get_return(a_weight, b_weight), 2)) + "%")
 
     if risk:
-        st.write(portfolio.risk(a_weight, b_weight))
+        st.markdown("Risk of portfolio with weights of " +
+                 a_upper + ": " + str(a_weight) + " and " + b_upper + ": " + str(b_weight) + " is " +
+                 str(round(portfolio.risk(a_weight, b_weight), 2)) + "%")
 
     if cov:
-        st.write(portfolio.get_cov())
+        st.markdown("Covariance of portoflio: " + str(round(portfolio.get_cov(), 2)))
 
     if corr:
-        st.write(portfolio.get_corr())
+        st.markdown("Correlation coeff. of " + a_upper + " and " + b_upper + ": " + str(round(portfolio.get_corr(), 2)))
 
     if min_risk:
-        st.write(portfolio.get_min_risk())
+        a, b = portfolio.get_min_risk()
+        st.markdown("Minimum risk portfolio consists of the weights " + a_upper + ": " + str(
+            round(a, 2)) + " and " + b_upper + ": " + str(round(b, 2)))
 
     if optimum:
-        st.write(portfolio.get_optimum())
+        a, b = portfolio.get_optimum()
+        st.markdown("Optimum portfolio consists of the weights " + a_upper + ": " + str(
+            round(a, 2)) + " and " + b_upper + ": " + str(round(b, 2)))
 
     if plot_risk_vs_return:
+        st.markdown("**Graph of risk vs return**")
         st.line_chart(portfolio.plot_risk_vs_return(), x="Risk (%)", y="Returns (%)")
 except:
     st.warning('Please enter valid tickers')
+

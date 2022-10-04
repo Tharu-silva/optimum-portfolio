@@ -3,7 +3,7 @@ from yahoo_fin.stock_info import *
 import numpy as np
 from datetime import date
 
-st.set_page_config(page_icon="🤯😮‍💨")
+st.set_page_config(page_icon="📈")
 @st.cache
 class Stock:
     def __init__(self, ticker, period="1mo"):
@@ -56,20 +56,18 @@ with st.sidebar:
     mean_rtr = st.checkbox('Get mean returns')
     risk = st.checkbox('Get risk')
 
-if adj_close:
-    try:
+try:
+    if adj_close:
+        st.markdown("**Price overtime**")
         st.line_chart(stock.prices())
-    except:
-        st.warning("Please enter a valid ticker")
 
-if mean_rtr:
-    try:
-        st.write(stock.mean_return())
-    except:
-        st.warning("Please enter a valid ticker")
+    if mean_rtr:
+        msg = "Mean return: " + str(round(stock.mean_return(), 2)) + "%"
+        st.write(msg)
 
-if risk:
-    try:
-        st.write(stock.risk())
-    except:
-        st.warning("Please enter a valid ticker")
+    if risk:
+        msg = "Risk: " + str(round(stock.risk(), 2)) + "%"
+        st.write(msg)
+except:
+    st.warning("Please enter a valid ticker")
+
